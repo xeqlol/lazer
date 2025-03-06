@@ -2,7 +2,9 @@ use std::{collections::HashMap, env};
 
 use crate::segment::Segment;
 
-pub fn get_dir_segment<'a>() -> Segment<'a> {
+const DEFAULT_TEMPLATE: &str = r"\[at [$directory](f:yellow b)\]";
+
+pub fn get_dir_segment<'a>() -> Option<Segment<'a>> {
     let curren_dir = env::current_dir()
         .expect("the wtf with current dir?")
         .into_os_string()
@@ -19,8 +21,8 @@ pub fn get_dir_segment<'a>() -> Segment<'a> {
     let mut variables = HashMap::new();
     variables.insert("directory", dir.clone());
 
-    Segment {
-        template: r"\[at [$directory](f:yellow b)\]".to_string(),
+    Some(Segment {
+        template: DEFAULT_TEMPLATE.to_string(),
         variables,
-    }
+    })
 }

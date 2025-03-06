@@ -1,6 +1,3 @@
-use std::collections::HashMap;
-
-use formatter::format_template;
 use itertools::Itertools;
 mod formatter;
 mod modules;
@@ -11,7 +8,7 @@ use modules::get_modules;
 
 const ZSH_INIT: &str = include_str!("./init.zsh");
 
-const SEPARATOR: &str = " ⛬  ";
+const SEPARATOR: &str = "";
 
 fn cli() -> Command {
     Command::new("lazer")
@@ -48,7 +45,8 @@ fn main() {
                 let fmt = segments
                     .iter()
                     .cloned()
-                    .map(|segment| segment.render())
+                    .filter(|segment| segment.is_some())
+                    .map(|segment| segment.unwrap().render())
                     .join(SEPARATOR);
 
                 print!("{}\n→ ", fmt);
