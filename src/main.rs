@@ -12,7 +12,7 @@ use parser::parse_template;
 
 const ZSH_INIT: &str = include_str!("./init.zsh");
 
-const PROMPT_TEMPLATE: &str = "$user ~ $dir ~ $git";
+const PROMPT_TEMPLATE: &str = "$user$dir$git";
 
 fn cli() -> Command {
     Command::new("lazer")

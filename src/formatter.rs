@@ -33,7 +33,7 @@ pub fn format_template(template: Template, variables: &HashMap<String, String>) 
                     if let Some(value) = variables.get(var_name.as_str()) {
                         result.push_str(value)
                     } else {
-                        result.push_str(var_name.as_str())
+                        result.push_str("")
                     }
                 }
                 Expression::TextGroup(text_group) => {
