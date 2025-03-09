@@ -1,7 +1,7 @@
 use git2::{ErrorCode, Repository};
 use std::{collections::HashMap, env};
 
-use crate::segment::Segment;
+use crate::modules::Module;
 
 const DEFAULT_TEMPLATE: &str = r"\[git [$branch$is_dirty](f:blue b)\]";
 
@@ -23,11 +23,11 @@ fn has_uncommitted_changes(repo: &Repository) -> Result<bool, git2::Error> {
     Ok(false)
 }
 
-pub fn get_git_segment<'a>() -> Option<Segment<'a>> {
-    let repo = Repository::open(env::current_dir().unwrap());
+pub fn get_git_module() -> Result<Option<Module>, anyhow::Error> {
+    let repo = Repository::open(env::current_dir()?);
 
     if repo.is_err() {
-        return None;
+        return Ok(None);
     }
 
     let repo = repo.unwrap();
@@ -42,12 +42,12 @@ pub fn get_git_segment<'a>() -> Option<Segment<'a>> {
     let head = head.as_ref().and_then(|h| h.shorthand());
 
     let branch: &str = head.unwrap_or("HEAD");
-    let is_dirty = has_uncommitted_changes(&repo).unwrap();
+    let is_dirty = has_uncommitted_changes(&repo)?;
 
     let mut variables = HashMap::new();
-    variables.insert("branch", branch.to_string());
+    variables.insert("branch".to_string(), branch.to_string());
     variables.insert(
-        "is_dirty",
+        "is_dirty".to_string(),
         if is_dirty {
             "*".to_string()
         } else {
@@ -55,8 +55,8 @@ pub fn get_git_segment<'a>() -> Option<Segment<'a>> {
         },
     );
 
-    Some(Segment {
+    Ok(Some(Module {
         template: DEFAULT_TEMPLATE.to_string(),
         variables,
-    })
+    }))
 }

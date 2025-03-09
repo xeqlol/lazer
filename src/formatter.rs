@@ -1,11 +1,6 @@
 use std::collections::HashMap;
 
-use pest::Parser;
-use pest_derive::Parser;
-
-#[derive(Parser)]
-#[grammar = "spec.pest"]
-pub struct TemplateParser;
+use crate::parser::{Expression, Template};
 
 fn format_string(string: String, styles: Vec<&str>) -> String {
     let mut fmt = string;
@@ -27,30 +22,24 @@ fn format_string(string: String, styles: Vec<&str>) -> String {
     fmt
 }
 
-pub fn format_template(template: &str, variables: &HashMap<&str, String>) -> String {
-    let pairs = TemplateParser::parse(Rule::file, template).unwrap();
-
-    fn parse(pairs: pest::iterators::Pairs<Rule>, variables: &HashMap<&str, String>) -> String {
+pub fn format_template(template: Template, variables: &HashMap<String, String>) -> String {
+    fn format(expressions: Vec<Expression>, variables: &HashMap<String, String>) -> String {
         let mut result = String::new();
 
-        for pair in pairs {
-            match pair.as_rule() {
-                Rule::text => result.push_str(pair.as_str().replace(r"\", "").as_str()),
-                Rule::variable => {
-                    let variable = &pair.as_str()[1..]; // remove $ sign at start
-
-                    if let Some(value) = variables.get(variable) {
+        for expression in expressions {
+            match expression {
+                Expression::Text(text) => result.push_str(text.replace(r"\", "").as_str()),
+                Expression::Variable(var_name) => {
+                    if let Some(value) = variables.get(var_name.as_str()) {
                         result.push_str(value)
                     } else {
-                        result.push_str(pair.as_str())
+                        result.push_str(var_name.as_str())
                     }
                 }
-                Rule::text_group => {
-                    let mut pair = pair.into_inner();
-                    let format = parse(pair.next().unwrap().into_inner(), variables);
-                    let style = pair
-                        .next()
-                        .unwrap()
+                Expression::TextGroup(text_group) => {
+                    let format = format(text_group.format, variables);
+                    let style = text_group
+                        .style
                         .as_str()
                         .trim()
                         .split(" ")
@@ -59,12 +48,11 @@ pub fn format_template(template: &str, variables: &HashMap<&str, String>) -> Str
 
                     result.push_str(formatted.as_str());
                 }
-                _ => {}
             }
         }
 
         result
     }
 
-    parse(pairs, variables)
+    format(template.expressions, variables)
 }

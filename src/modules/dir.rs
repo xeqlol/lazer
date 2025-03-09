@@ -1,28 +1,36 @@
 use std::{collections::HashMap, env};
 
-use crate::segment::Segment;
+use crate::modules::Module;
 
 const DEFAULT_TEMPLATE: &str = r"\[at [$directory](f:yellow b)\]";
 
-pub fn get_dir_segment<'a>() -> Option<Segment<'a>> {
-    let curren_dir = env::current_dir()
-        .expect("the wtf with current dir?")
-        .into_os_string()
-        .into_string()
-        .expect("wtf problem due to string convert");
+pub fn get_dir_module() -> Result<Option<Module>, anyhow::Error> {
+    let current_dir = env::current_dir()?.into_os_string().into_string();
+
+    if current_dir.is_err() {
+        return Ok(None);
+    }
+
+    let current_dir = current_dir.unwrap();
 
     let home_dir = dirs::home_dir()
         .expect("some stuff with home dir")
         .into_os_string()
-        .into_string()
-        .unwrap();
-    let dir = curren_dir.replace(&home_dir, "~");
+        .into_string();
+
+    if home_dir.is_err() {
+        return Ok(None);
+    }
+
+    let home_dir = home_dir.unwrap();
+
+    let dir = current_dir.replace(&home_dir, "~");
 
     let mut variables = HashMap::new();
-    variables.insert("directory", dir.clone());
+    variables.insert("directory".to_string(), dir.clone());
 
-    Some(Segment {
+    Ok(Some(Module {
         template: DEFAULT_TEMPLATE.to_string(),
         variables,
-    })
+    }))
 }

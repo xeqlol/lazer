@@ -2,7 +2,7 @@ file = _{ SOI ~ expr* ~ EOI }
 expr = _{ text | variable | text_group }
 
 text = { (char | escaped_char)+ }
-char = _{ ASCII_ALPHANUMERIC | "_" | "." | " " | "-" }
+char = _{ ASCII_ALPHANUMERIC | "_" | "." | " " | "-" | "~" | ">" | "<" }
 escaped_char = _{ "\\" ~ ("[" | "]" | "(" | ")" | "\\"){1} } 
 
 variable = @{ "$" ~ variable_name }
