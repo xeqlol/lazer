@@ -2,9 +2,11 @@ use std::collections::HashMap;
 
 use crate::parser::{Expression, Template};
 
+// TODO: add #xxxxxx colors support (translate them to 255/16 colors automatically)
 fn format_string(string: String, styles: Vec<&str>) -> String {
     let mut fmt = string;
 
+    // FIX: foreground not working, need to fix that
     for style in styles {
         if style.starts_with("f:") {
             fmt = format!(r"%F{{{}}}{}%f", style.trim()[2..].to_string(), fmt)

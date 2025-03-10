@@ -1,12 +1,14 @@
 file = _{ SOI ~ expr* ~ EOI }
 expr = _{ text | variable | text_group }
 
-text = { (char | escaped_char)+ }
-char = _{ ASCII_ALPHANUMERIC | "_" | "." | " " | "-" | "~" | ">" | "<" }
-escaped_char = _{ "\\" ~ ("[" | "]" | "(" | ")" | "\\"){1} } 
-
 variable = @{ "$" ~ variable_name }
 variable_name = { ('a'..'z' | 'A'..'Z' | "_") ~ ('a'..'z' | 'A'..'Z' | '0'..'9' | "_")* }
+
+text = { (string | escape)+ }
+string = _{ text_inner_char+ }
+text_inner_char = _{ !escaped_char ~ ANY }
+escape = _{ "\\" ~ escaped_char }
+escaped_char = _{ "[" | "]" | "(" | ")" | "\\" | "$" }
 
 text_group = { "[" ~ format ~ "]" ~ "(" ~ style ~ ")" }
 format = { (text | variable)+ }

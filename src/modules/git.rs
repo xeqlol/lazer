@@ -3,7 +3,7 @@ use std::{collections::HashMap, env};
 
 use crate::modules::Module;
 
-const DEFAULT_TEMPLATE: &str = r"\[git [$branch$is_dirty](f:blue b)\]";
+const DEFAULT_TEMPLATE: &str = r"[ $branch$is_dirty ](b:blue f:white)";
 
 fn has_uncommitted_changes(repo: &Repository) -> Result<bool, git2::Error> {
     let statuses = repo.statuses(None)?;

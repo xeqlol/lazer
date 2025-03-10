@@ -2,7 +2,7 @@ use std::{collections::HashMap, env};
 
 use crate::modules::Module;
 
-const DEFAULT_TEMPLATE: &str = r"\[at [$directory](f:yellow b)\]";
+const DEFAULT_TEMPLATE: &str = r"[ $directory ](b:green f:white)";
 
 pub fn get_dir_module() -> Result<Option<Module>, anyhow::Error> {
     let current_dir = env::current_dir()?.into_os_string().into_string();

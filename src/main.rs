@@ -12,7 +12,7 @@ use parser::parse_template;
 
 const ZSH_INIT: &str = include_str!("./init.zsh");
 
-const PROMPT_TEMPLATE: &str = "$user$dir$git";
+const PROMPT_TEMPLATE: &str = "[](f:yellow)$user[](f:yellow b:green)$dir[](f:green b:blue)$git[](f:blue)\n[:](f:yellow)[:](f:green)[>](f:blue) ";
 
 fn cli() -> Command {
     Command::new("lazer")
@@ -77,7 +77,7 @@ fn main() {
 
                 let formatted_prompt = format_template(prompt_template, &rendered_modules);
 
-                print!("{}\n→ ", formatted_prompt);
+                print!("{}", formatted_prompt);
             }
         }
         _ => unreachable!(),
