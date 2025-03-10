@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use crate::parser::{Expression, Template};
 
-// TODO: add #xxxxxx colors support (translate them to 255/16 colors automatically)
 fn format_string(string: String, styles: Vec<&str>) -> String {
     let mut fmt = string;
 

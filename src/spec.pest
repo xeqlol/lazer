@@ -12,4 +12,4 @@ escaped_char = _{ "[" | "]" | "(" | ")" | "\\" | "$" }
 
 text_group = { "[" ~ format ~ "]" ~ "(" ~ style ~ ")" }
 format = { (text | variable)+ }
-style = { 'a'..'z' ~ ('a'..'z' | ":" | " ")+ }
+style = { string+ }
