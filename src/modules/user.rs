@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::modules::Module;
 
-const DEFAULT_TEMPLATE: &str = r"[$user ](b:#ffcb00 f:black)";
+const DEFAULT_TEMPLATE: &str = r"[$user ](bg:#ffcb00 fg:#000000)";
 
 pub fn get_user_module() -> Result<Option<Module>, anyhow::Error> {
     let username = whoami::username();

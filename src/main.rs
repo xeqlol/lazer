@@ -12,7 +12,7 @@ use parser::parse_template;
 
 const ZSH_INIT: &str = include_str!("./init.zsh");
 
-const PROMPT_TEMPLATE: &str = "[](f:#ffcb00)$user[](f:#ffcb00 b:#94c237)$dir[](f:#94c237 b:#2dab65)$git[](f:#2dab65)\n[:](f:#ffcb00)[:](f:#94c237)[>](f:#2dab65) ";
+const PROMPT_TEMPLATE: &str = "[](fg:#ffcb00)$user[](fg:#ffcb00 bg:#94c237)$dir[](fg:#94c237 bg:#2dab65)$git[](fg:#2dab65)\n[:](fg:#ffcb00)[:](fg:#94c237)[>](fg:#2dab65) ";
 
 fn cli() -> Command {
     Command::new("lazer")

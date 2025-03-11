@@ -41,12 +41,12 @@ pub fn parse_style(style: &str) -> Style {
     for entry in parts {
         let entry = entry.trim();
 
-        if entry.starts_with("f:") {
-            fg = Some(entry.trim()[2..].to_string())
+        if entry.starts_with("fg:") {
+            fg = Some(entry.trim()[3..].to_string())
         }
 
-        if entry.starts_with("b:") {
-            bg = Some(entry.trim()[2..].to_string())
+        if entry.starts_with("bg:") {
+            bg = Some(entry.trim()[3..].to_string())
         }
 
         if entry == "b" {

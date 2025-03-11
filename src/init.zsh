@@ -1,4 +1,4 @@
 precmd() {
-    PROMPT="$(lazer prompt --right)"
+    PROMPT="$(lazer prompt)"
     # todo: RPROMPT
 }
