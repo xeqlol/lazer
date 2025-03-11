@@ -41,8 +41,11 @@ fn main() {
         }
         Some(("prompt", sync_matches)) => {
             if sync_matches.contains_id("right") {
-                // todo
-                unreachable!()
+                let fmt = format!(
+                    "%{{{}%}}",
+                    "\x1b[38;2;255;82;197;48;2;155;106;0mTRUECOLOR\x1b[0m" // "\x1b[38;2;255;82;197;48;2;155;106;0mHello\x1b[0m"
+                );
+                print!("{}\n>>", fmt);
             } else {
                 let prompt_template = parse_template(PROMPT_TEMPLATE);
                 let modules = get_modules();

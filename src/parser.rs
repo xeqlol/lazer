@@ -21,7 +21,40 @@ pub enum Expression {
 #[derive(Debug)]
 pub struct TextGroup {
     pub format: Vec<Expression>,
-    pub style: String,
+    pub style: Style,
+}
+
+#[derive(Debug)]
+pub struct Style {
+    pub fg: Option<String>,
+    pub bg: Option<String>,
+    pub bold: bool,
+}
+
+pub fn parse_style(style: &str) -> Style {
+    let mut fg: Option<String> = None;
+    let mut bg: Option<String> = None;
+    let mut bold = false;
+    let parts = style.split(" ");
+
+    // carry latest entry of style
+    for entry in parts {
+        let entry = entry.trim();
+
+        if entry.starts_with("f:") {
+            fg = Some(entry.trim()[2..].to_string())
+        }
+
+        if entry.starts_with("b:") {
+            bg = Some(entry.trim()[2..].to_string())
+        }
+
+        if entry == "b" {
+            bold = true
+        }
+    }
+
+    Style { fg, bg, bold }
 }
 
 pub fn parse_template(template: &str) -> Template {
@@ -49,7 +82,7 @@ pub fn parse_template(template: &str) -> Template {
 
                     expressions.push(Expression::TextGroup(TextGroup {
                         format,
-                        style: style.to_string(),
+                        style: parse_style(style),
                     }));
                 }
                 _ => {}
