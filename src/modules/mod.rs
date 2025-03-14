@@ -1,6 +1,6 @@
-mod dir;
-mod git;
-mod user;
+pub mod dir;
+pub mod git;
+pub mod user;
 
 use dir::get_dir_module;
 use git::get_git_module;

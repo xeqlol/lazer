@@ -1,0 +1,17 @@
+format = """
+[](fg:#ffcb00)\
+$user\
+[](fg:#ffcb00 bg:#94c237)\
+$dir\
+[](fg:#94c237 bg:#2dab65)\
+$git\
+[](fg:#2dab65)\
+\n\
+[:](fg:#ffcb00)\
+[:](fg:#94c237)\
+[>](fg:#2dab65) 
+"""
+
+[git]
+"symbol" = ""
+"style" = "bg:#2dab65 fg:#ffffff"

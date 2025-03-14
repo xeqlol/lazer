@@ -1,9 +1,17 @@
 use git2::{ErrorCode, Repository};
+use serde::Deserialize;
 use std::{collections::HashMap, env};
 
 use crate::modules::Module;
 
 const DEFAULT_TEMPLATE: &str = r"[  $branch$is_dirty ](bg:#2dab65 fg:#ffffff)";
+
+#[derive(Debug, Deserialize)]
+#[allow(unused)]
+pub(crate) struct GitSettings {
+    pub symbol: String,
+    pub style: String,
+}
 
 fn has_uncommitted_changes(repo: &Repository) -> Result<bool, git2::Error> {
     let statuses = repo.statuses(None)?;
